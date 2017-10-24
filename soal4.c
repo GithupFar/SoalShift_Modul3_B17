@@ -12,12 +12,12 @@ void factorial(int a)
 }
 
 int main(){
-    int n,t;
-    scanf("%d",&n);
+    int n=0,t;
     pthread_t tid[n];
-    for(j=0;j<n;j++){
+    while(1){
         scanf("%d",&t);
-        pthread_create(&tid[j],NULL,factorial,t);
-        pthread_join(tid[j], NULL);
+        pthread_create(&tid[n],NULL,factorial,t);
+        pthread_join(tid[n], NULL);
+        n++;
     }
 }

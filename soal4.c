@@ -11,6 +11,13 @@ void factorial(int a)
     printf("Hasil %d! = %d\n",a,hasil);
 }
 
-/*int main(){
-    return 0;
-}*/
+int main(){
+    int n=0,t;
+    pthread_t tid[n];
+    while(1){
+        scanf("%d",&t);
+        pthread_create(&tid[n],NULL,factorial,t);
+        pthread_join(tid[n], NULL);
+        n++;
+    }
+}

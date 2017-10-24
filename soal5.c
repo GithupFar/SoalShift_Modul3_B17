@@ -32,15 +32,19 @@ void* carinama(char cari[])
 		banyak++;
 	}
     }
-	printf("BANYAK %d\n",banyak);
+	printf("%s : %d\n",cari,banyak);
 }
 
 int main()
 {
 	char nama [1000];
+	pthread_t tid[1000];
+	int n=0;
 	while (scanf("%s",nama)!=EOF)
 	{
-		carinama (nama);
+		pthread_create(&tid[n],NULL,&carinama,nama);
+        	n++;
 	}
+	for (int i=0;i<n;i++) pthread_join (tid [i],NULL);
 	return 0;
 }

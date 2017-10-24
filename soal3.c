@@ -47,7 +47,16 @@ void* kasihmakan(void *arg)
     return NULL;
 }
 
-void kenyang(int score)
+void* kenyang(void *arg){
+    	pthread_t id = pthread_self();
+    	if(pthread_equal(id,tid[3])){
+		lohstat+=10;
+	}
+	else if(pthread_equal(id,tid[4])){
+		kepinstat+=10;
+	}
+	printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, crabstat);
+}
 
 int main(void)
 {
@@ -67,18 +76,22 @@ int main(void)
 		pthread_join(tid[i],NULL);
         i++;
     }*/
-	int pil;
+    int pil;
     printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, crabstat);
     while(1){
 	    printf("1. Feed Lfish\n");
 	    printf("2. Feed Crab\n");
 	    scanf("%d", &pil);
     if(pil==1){
-        pthread_create(&tid[3],NULL,kenyang,lohstat);
+        pthread_create(&tid[3],NULL,&kenyang,NULL);
     }
     else if(pil==2){
-        pthread_create(&tid[4],NULL,kenyang,kepinstat);
+        pthread_create(&tid[4],NULL,&kenyang,NULL);
     }
+	else{
+		/*sampai waktu dia kelaparan--*/
+	}
+	    
 	for(i=0;i<5;i++){
 	    pthread_join(tid[i],NULL);
 	}

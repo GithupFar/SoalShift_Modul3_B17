@@ -5,9 +5,10 @@
 #include<unistd.h>
 #include<stdlib.h>
 
-pthread_t tid[3];//inisialisasi array untuk menampung thread dalam kasusu ini ada 2 thread
+pthread_t tid[5];//inisialisasi array untuk menampung thread dalam kasusu ini ada 2 thread
 
 int lohstat = 100, kepistat = 100;
+
 void* kasihmakan(void *arg)
 {
 	unsigned long i=0;
@@ -45,9 +46,12 @@ void* kasihmakan(void *arg)
     }
     return NULL;
 }
+
+void kenyang(int score)
+
 int main(void)
 {
-    int i=0;
+    /*int i=0;
     int err;
     while(i<2)//looping membuat thread 2x
     {
@@ -62,6 +66,21 @@ int main(void)
         }
 		pthread_join(tid[i],NULL);
         i++;
+    }*/
+	int pil;
+    printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, crabstat);
+    while(1){
+	    printf("1. Feed Lfish\n");
+	    printf("2. Feed Crab\n");
+	    scanf("%d", &pil);
+    if(pil==1){
+        pthread_create(&tid[3],NULL,kenyang,lohstat);
     }
+    else if(pil==2){
+        pthread_create(&tid[4],NULL,kenyang,kepinstat);
+    }
+	for(i=0;i<5;i++){
+	    pthread_join(tid[i],NULL);
+	}
     return 0;
 }

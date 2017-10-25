@@ -70,6 +70,10 @@ int main ()
 								printf("%s %d\n",stock[i].name,stock[i].qty);
 								break;
 							}
+							else if (i==5 && search(&input,&stock[i])!=0)
+							{
+								printf ("/n senjata yang diinputkan tidak ada /n");
+							}
 						}
 					}
 					else if (b==2)//input data
@@ -131,6 +135,10 @@ int main ()
 						
 						break;
 					}
+					else if (i==5 && search(&input,&stock[i])!=0)
+							{
+								printf ("/n senjata yang diinputkan tidak ada /n");
+							}
 				}
 			}
 			else if (b==2)//input data

@@ -1,100 +1,73 @@
-#include<stdio.h>
-#include<string.h>
-#include<pthread.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <signal.h>
 
-pthread_t tid[5];//inisialisasi array untuk menampung thread dalam kasusu ini ada 2 thread
+pthread_t tid [2];
+int lohstat, kepistat;
 
-int lohstat = 100, kepistat = 100;
 
-void* kasihmakan(void *arg)
+void* kepiting(void *arg)
 {
-	unsigned long i=0;
-    pthread_t id=pthread_self();
-    int iter;
-    if(pthread_equal(id,tid[0]))//thread untuk counter time lohan
-    {
-		while (lohstat <=100 && lohstat >=0)
-		{
-			printf("Berkurang 10 lohan lho!");
-			sleep (1);
-			lohstat -= 10;
-			
-		}
+	while (kepistat >0 && kepistat <=100){
+		if (kepistat<=0 || lohstat<=0) pthread_exit (&kepistat);
+		kepistat -= 10;
+		printf("kepiting semakin lapar = %d\n",kepistat);
+		sleep (2);
 	}
-/*	
-	printf("ini ada yang jalan lho");
-	system ("cvlc bagimu-negri.mp3");
-*/	
-	else if (pthread_equal (id,tid[1]))
+//	if (kepistat<=0 || lohstat<=0) pthread_exit (&kepistat);
+}
+
+void* lohan (void *arg)
+{
+	while (lohstat >0 && lohstat <=100){
+		if (kepistat<=0 || lohstat<=0) pthread_exit (&lohstat);
+		lohstat -= 15;
+		printf("lohan semakin lapar = %d\n",lohstat);
+		sleep (1);
+	}
+//	if (kepistat<=0 || lohstat<=0) pthread_exit (&lohstat);
+}
+
+int main(){
+	lohstat = 100; kepistat = 100;
+	int makan;
+	
+	pthread_create (&tid[0], NULL, &kepiting, NULL);
+	pthread_create (&tid[1], NULL, &lohan, NULL);
+	
+
+	while (1)
 	{
-		while (kepistat <=100 && kepistat >=0)
-		{
-			printf("Berkurang 10 kepitingnya lho!");
-			sleep (2);
-			kepistat -= 10;
+		if (kepistat < 1 || lohstat < 1){
+			printf("Mati semua!\n");
+			pthread_cancel (tid[0]);
+			pthread_cancel (tid[1]);
+			break;
+		}
+		printf("Kasih makan\n1.Kepiting\n2.Lohan\n");
+		printf("Kasih makan ke mana (1/2)? ");
+		scanf("%d",&makan);
+		if (makan==1){
+			kepistat += 10;
+			printf("kepiting dikasih makan = %d\n",kepistat);
+		}
+		else if (makan ==2 ){
+			lohstat += 10;
+			printf("lohan dikasih makan = %d\n",lohstat);
 		}
 	}
-    else if(pthread_equal(id,tid[2]))
-    {
-		int anu;
-        scanf("%d",&anu);
-		lohstat += anu;
-		system ("pkill");
-    }
-    return NULL;
-}
 
-void* kenyang(void *arg){
-    	pthread_t id = pthread_self();
-    	if(pthread_equal(id,tid[3])){
-		lohstat+=10;
-	}
-	else if(pthread_equal(id,tid[4])){
-		kepistat+=10;
-	}
-	printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, kepistat);
-}
+	pthread_join (tid[0],NULL);
+	pthread_join (tid[1], NULL);
 
-int main(void)
-{
-    /*int i=0;
-    int err;
-    while(i<2)//looping membuat thread 2x
-    {
-        err=pthread_create(&(tid[i]),NULL,&kasihmakan,NULL);//membuat thread
-        if(err!=0)//cek error
-        {
-            printf("\n can't create thread : [%s]",strerror(err));
-        }
-        else
-        {
-            printf("\n create thread success");
-        }
-		pthread_join(tid[i],NULL);
-        i++;
-    }*/
-    int pil;
-    printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, kepistat);
-    while(1){
-	    printf("1. Feed Lfish\n");
-	    printf("2. Feed Crab\n");
-	    scanf("%d", &pil);
-		if(pil==1){
-		    pthread_create(&tid[3],NULL,&kenyang,NULL);
-		}
-		else if(pil==2){
-		    pthread_create(&tid[4],NULL,&kenyang,NULL);
-		}
-		else{
-			/*sampai waktu dia kelaparan--*/
-		}
-			
-		for(int i=0;i<5;i++){
-			pthread_join(tid[i],NULL);
-		}
+	
+
+/*	if (kepistat < 0 || lohstat < 0){
+		pthread_kill (&tid[0], NULL);
+		pthread_kill (&tid[1], NULL);
+		printf("sudah terbunuh semua\n");
 	}
-    return 0;
+*/
+	return 0;
 }

@@ -1,99 +1,86 @@
-#include<stdio.h>
-#include<string.h>
-#include<pthread.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
 
-pthread_t tid[5];//inisialisasi array untuk menampung thread dalam kasusu ini ada 2 thread
+int p1, p2, status, minetot;
+int mine [5][5]; //4x4 >> mulai dari 0,1,2,3
+pthread_t tid [2];
+pthread_mutex_t lock;
 
-int lohstat = 100, kepistat = 100;
 
-void* kasihmakan(void *arg)
+void isiranjau(int num)
 {
-	unsigned long i=0;
-    pthread_t id=pthread_self();
-    int iter;
-    if(pthread_equal(id,tid[0]))//thread untuk counter time lohan
-    {
-		while (lohstat <=100 && lohstat >=0)
-		{
-			printf("Berkurang 10 lho!");
-			sleep (1);
-			lohstat -= 10;
-			
-		}
+	int i,j;
+	if (num % 4 == 0){
+		i = (num/4)-1;
+		j = (num%4)-1;
 	}
-/*	
-	printf("ini ada yang jalan lho");
-	system ("cvlc bagimu-negri.mp3");
-*/	
-	else if (pthread_equal (id,tid[1]))
-	{
-		while (kepistat <=100 && kepistat >=0)
-		{
-			printf("Berkurang 10 kepitingnya lho!");
-			sleep (2);
-			kepistat -= 10;
-		}
-	}
-    else if(pthread_equal(id,tid[2]))
-    {
-		int anu;
-        scanf("%d",&anu);
-		lohstat += anu;
-		system ("pkill");
-    }
-    return NULL;
-}
-
-void* kenyang(void *arg){
-    	pthread_t id = pthread_self();
-    	if(pthread_equal(id,tid[3])){
-		lohstat+=10;
-	}
-	else if(pthread_equal(id,tid[4])){
-		kepinstat+=10;
-	}
-	printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, crabstat);
-}
-
-int main(void)
-{
-    /*int i=0;
-    int err;
-    while(i<2)//looping membuat thread 2x
-    {
-        err=pthread_create(&(tid[i]),NULL,&kasihmakan,NULL);//membuat thread
-        if(err!=0)//cek error
-        {
-            printf("\n can't create thread : [%s]",strerror(err));
-        }
-        else
-        {
-            printf("\n create thread success");
-        }
-		pthread_join(tid[i],NULL);
-        i++;
-    }*/
-    int pil;
-    printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, crabstat);
-    while(1){
-	    printf("1. Feed Lfish\n");
-	    printf("2. Feed Crab\n");
-	    scanf("%d", &pil);
-    if(pil==1){
-        pthread_create(&tid[3],NULL,&kenyang,NULL);
-    }
-    else if(pil==2){
-        pthread_create(&tid[4],NULL,&kenyang,NULL);
-    }
 	else{
-		/*sampai waktu dia kelaparan--*/
+		i = num/4;
+		j = num%4;
 	}
-	    
-	for(i=0;i<5;i++){
-	    pthread_join(tid[i],NULL);
-	}
-    return 0;
+	mine [i][j] = 1; //diisi ranjau
+	minetot++;
 }
+
+int cekranjau (int num)
+{
+	int i,j;
+	if (num % 4 == 0){
+		i = (num/4)-1;
+		j = (num%4)-1;
+	}
+	else{
+		i = num/4;
+		j = num%4;
+	}
+	if (mine[i][j]) return 1;
+	else return 0;
+}
+
+
+void play(int player)
+{
+	int ranjau,pasang,tebak;
+	
+	printf("p%d memasang ranjau!\n",player);
+	printf("Berapa banyak ranjau yg mau dipasang? ");
+	scanf("%d",&ranjau);
+	
+	for (int i=0;i<ranjau;i++)
+	{
+		printf("Ranjau mau dipasang dilubang mana? ");
+		scanf("%d",&pasang);
+		isiranjau (pasang);
+		printf("Ranjau sudah dipasang di lubang %d\n",pasang);
+	}
+	
+	if (player==1){
+		printf("p2 menebak ranjau sebanyak 4 kali!\n");
+		for (int i=0;i<4;i++){
+			printf("Mau tebak lubang mana saja? ");
+			scanf("%d",&tebak);
+			int temp = cekranjau (tebak);
+			p1 += temp;
+		}
+	}
+
+	else if (player==2){
+		printf("p1 menebak ranjau sebanyak 4 kali!\n");
+		for (int i=0;i<4;i++){
+			printf("Mau tebak lubang mana saja? ");
+			scanf("%d",&tebak);
+			int temp = cekranjau (tebak);
+			p2 += temp;
+		}
+	}		
+
+}
+
+int main()
+{
+	play (1);
+	return 0;
+}			

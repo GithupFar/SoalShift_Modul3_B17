@@ -10,10 +10,10 @@ int lohstat, kepistat;
 void* kepiting(void *arg)
 {
 	while (kepistat >0 && kepistat <=100){
-		if (kepistat<=0 || lohstat<=0) pthread_exit (&kepistat);
+		if (kepistat<=0 || kepistat>=100 || lohstat<=0 || lohstat >=100) pthread_exit (&kepistat);
 		kepistat -= 10;
-		printf("kepiting semakin lapar = %d\n",kepistat);
-		sleep (2);
+//		printf("kepiting semakin lapar = %d\n",kepistat);
+		sleep (20);
 	}
 //	if (kepistat<=0 || lohstat<=0) pthread_exit (&kepistat);
 }
@@ -21,10 +21,10 @@ void* kepiting(void *arg)
 void* lohan (void *arg)
 {
 	while (lohstat >0 && lohstat <=100){
-		if (kepistat<=0 || lohstat<=0) pthread_exit (&lohstat);
+		if (kepistat<=0 || kepistat>=100 || lohstat<=0 || lohstat >=100) pthread_exit (&lohstat);
 		lohstat -= 15;
-		printf("lohan semakin lapar = %d\n",lohstat);
-		sleep (1);
+//		printf("lohan semakin lapar = %d\n",lohstat);
+		sleep (10);
 	}
 //	if (kepistat<=0 || lohstat<=0) pthread_exit (&lohstat);
 }
@@ -39,7 +39,7 @@ int main(){
 
 	while (1)
 	{
-		if (kepistat < 1 || lohstat < 1){
+		if (kepistat < 1 || lohstat < 1 || kepistat >100 || lohstat > 100){
 			printf("Mati semua!\n");
 			pthread_cancel (tid[0]);
 			pthread_cancel (tid[1]);

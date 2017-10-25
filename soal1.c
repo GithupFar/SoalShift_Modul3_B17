@@ -79,7 +79,7 @@ int main ()
 	{	
 		while (1)
 		{
-		printf ("--Welcome--\n");
+		printf ("\n\n--Welcome--\n");
         printf ("1. Beli Senjata\n");
         printf ("2. lihat stock\n");
         printf ("3. LOG OUT\n");
@@ -93,9 +93,20 @@ int main ()
 				{
 					if (search(&input,&stock[i])==0)
 					{
+						if(stock[i].qty==0)
+						{
+							printf("maaf stock habis");
+						}
+						else if (stock[i].qty-input.qty<0)
+						{
+							printf("Maaf Anda membeli barang lebih banyak dari stock yang tersedia");
+						}
+						else
+						{
 						stock[i].qty=stock[i].qty-input.qty;
-						
 						printf("Terimakasih Anda membeli %s sebanyak %d\n",input.name,input.qty);
+						}
+						
 						break;
 					}
 				}
@@ -103,14 +114,11 @@ int main ()
 			else if (b==2)//input data
 			{
 				int i;
-				scanf("%s", input.name);
-				//printf("%s %d", input.name, input.qty);
 				for(i=0;i<=5;i++)
 				{
-					if (search(&input,&stock[i])==0)
+					if (stock[i].qty>0)
 					{
 						printf("%s %d\n",stock[i].name,stock[i].qty);
-						break;
 					}
 				}
 			}

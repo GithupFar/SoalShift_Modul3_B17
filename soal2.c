@@ -41,10 +41,12 @@ int cekranjau (int num)
 }
 
 
-void play(int player)
+void* play(int player)
 {
 	int ranjau,pasang,tebak;
-	
+	pthread_mutex_lock (&lock);	
+
+
 	printf("p%d memasang ranjau!\n",player);
 	printf("Berapa banyak ranjau yg mau dipasang? ");
 	scanf("%d",&ranjau);
@@ -63,6 +65,7 @@ void play(int player)
 			printf("Mau tebak lubang mana saja? ");
 			scanf("%d",&tebak);
 			int temp = cekranjau (tebak);
+			if (temp) printf("p2 Kena RANJAU!\n");
 			p1 += temp;
 		}
 	}
@@ -73,14 +76,48 @@ void play(int player)
 			printf("Mau tebak lubang mana saja? ");
 			scanf("%d",&tebak);
 			int temp = cekranjau (tebak);
+			if (temp) printf("p1 Kena RANJAU!\n");
 			p2 += temp;
 		}
-	}		
+	}	
+
+	printf("-----\nskor sementara p1 : %d p2 : %d\n-----\n",p1,p2);
+	
+	pthread_mutex_unlock (&lock);	
 
 }
 
 int main()
 {
-	play (1);
+	int error;
+	if (pthread_mutex_init (&lock, NULL)!=0){
+		printf("\n mutex init failed \n");
+		return 1;
+	}
+
+	pthread_create (&tid[0], NULL, &play, 1);
+	pthread_create (&tid[1], NULL, &play, 2);
+
+	while (p1 < 10 || p2 <10 || minetot < 16){
+		pthread_create (&tid[0], NULL, &play, 1);
+		pthread_create (&tid[1], NULL, &play, 2);
+	}
+
+/*	while (1){
+		if (p1>10 || p2>10 || minetot > 15) break;
+	}
+*/
+	pthread_join (tid[0], NULL);
+	pthread_join (tid[1], NULL);
+	pthread_mutex_destroy (&lock);
+	
+	if (p1>10 || p2>10 || minetot > 15){
+		pthread_kill (&tid[0], NULL);
+		pthread_kill (&tid[1], NULL);
+		if (p1 > p2) printf("\n=====\np1 win\n=====");
+		if (p2 > p1) printf("\n=====\np2 win\n=====");
+		else printf("No one win\n");
+	}
+
 	return 0;
 }			

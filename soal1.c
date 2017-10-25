@@ -21,57 +21,79 @@ int main ()
 {
 	detail stock[] ={{"MP4A1",10},{"PM2-V1",20},{"SPR-3",1},{"SS2-V5",5},{"SPG1-V3",30},{"MINE",0}};
 	detail input;
+	detail password= {"KMD98",0};
 	int a,b;
 	while (1)
 {
-	printf("---Welcome to Khawari Shop---\n");
+	printf("\n---Welcome to Khawari Shop---\n");
 	printf("Choose your account\n");
 	printf("1.Admin\n");
-	printf("2.costumer\n");
+	printf("2.Costumer\n");
+	printf("3.Close\n");
 	scanf ("%d",&a);
 	if (a==1)//  data admin
 	{
-		while (1)
+		int c=1;
+		for(c;c<=4;c++)
 		{
-		printf ("\n\n--Menu--\n");
-		printf ("1. tambah Stock\n");
-		printf ("2. lihat stock\n");
-		printf ("3. LOG OUT\n");
-		scanf ("%d",&b);
-			if (b==1)//input data
+			printf ("\nmasukan password:\n");
+			scanf("%s", input.name);
+			if (c==3 && search(&input,&password)!=0)
 			{
-				int i;
-				scanf("%s %d", input.name , &input.qty);
-				//printf("%s %d", input.name, input.qty);
-				for(i=0;i<=5;i++)
-				{
-					if (search(&input,&stock[i])==0)
-					{
-						stock[i].qty=stock[i].qty+input.qty;
-						
-						printf("%s %d\n",stock[i].name,stock[i].qty);
-						break;
-					}
-				}
-			}
-			else if (b==2)//input data
-			{
-				int i;
-				for(i=0;i<=5;i++)
-				{
-					if (stock[i].qty>0)
-					{
-						printf("%s %d\n",stock[i].name,stock[i].qty);
-					}
-				}
-			}
-			else if (b==3)
-			{
+				printf ("maaf Anda bukan penjual\n\n");
 				break;
 			}
-			else 
+			else if(search(&input,&password)!=0)
 			{
-				printf ("please inputnya tidak ada di atas");
+				printf ("password salah\n");
+			}
+			else if (search(&input,&password)==0)
+			{
+				while (1)
+				{
+				printf ("\n\n--Menu--\n");
+				printf ("1. tambah Stock\n");
+				printf ("2. lihat stock\n");
+				printf ("3. LOG OUT\n");
+				scanf ("%d",&b);
+					if (b==1)//input data
+					{
+						int i;
+						scanf("%s %d", input.name , &input.qty);
+						//printf("%s %d", input.name, input.qty);
+						for(i=0;i<=5;i++)
+						{
+							if (search(&input,&stock[i])==0)
+							{
+								stock[i].qty=stock[i].qty+input.qty;
+								
+								printf("%s %d\n",stock[i].name,stock[i].qty);
+								break;
+							}
+						}
+					}
+					else if (b==2)//input data
+					{
+						int i;
+						for(i=0;i<=5;i++)
+						{
+							if (stock[i].qty>0)
+							{
+								printf("%s %d\n",stock[i].name,stock[i].qty);
+							}
+						}
+					}
+					else if (b==3)
+					{
+						break;
+						
+					}
+					else 
+					{
+						printf ("please inputnya tidak ada di atas\n\n");
+					}
+				}
+				break;
 			}
 		}
 	}
@@ -95,16 +117,16 @@ int main ()
 					{
 						if(stock[i].qty==0)
 						{
-							printf("maaf stock habis");
+							printf("\n maaf stock habis \n");
 						}
 						else if (stock[i].qty-input.qty<0)
 						{
-							printf("Maaf Anda membeli barang lebih banyak dari stock yang tersedia");
+							printf("\n Maaf Anda membeli barang lebih banyak dari stock yang tersedia \n");
 						}
 						else
 						{
 						stock[i].qty=stock[i].qty-input.qty;
-						printf("Terimakasih Anda membeli %s sebanyak %d\n",input.name,input.qty);
+						printf("\n Terimakasih Anda membeli %s sebanyak %d\n",input.name,input.qty);
 						}
 						
 						break;
@@ -124,14 +146,24 @@ int main ()
 			}
 			else if (b==3)
 			{
+				printf ("Terimakasih telah berberlanja di Khawari Weapon Shop\n\n");
 				break;
 			}
 			else 
 			{
-				printf ("please inputnya tidak ada di atas");
+				printf ("please inputnya tidak ada di atas\n\n");
 			}
     	}
         
+	}
+	else if (a==3)
+	{
+		printf("this made by B-17.INC");
+		break;
+	}
+	else
+	{
+		printf("input not registered\n\n");
 	}
 };
 }

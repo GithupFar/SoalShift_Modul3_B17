@@ -18,7 +18,7 @@ void* kasihmakan(void *arg)
     {
 		while (lohstat <=100 && lohstat >=0)
 		{
-			printf("Berkurang 10 lho!");
+			printf("Berkurang 10 lohan lho!");
 			sleep (1);
 			lohstat -= 10;
 			
@@ -53,9 +53,9 @@ void* kenyang(void *arg){
 		lohstat+=10;
 	}
 	else if(pthread_equal(id,tid[4])){
-		kepinstat+=10;
+		kepistat+=10;
 	}
-	printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, crabstat);
+	printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, kepistat);
 }
 
 int main(void)
@@ -77,23 +77,24 @@ int main(void)
         i++;
     }*/
     int pil;
-    printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, crabstat);
+    printf("Lohan status: %d  |  Crab stat: %d  \n", lohstat, kepistat);
     while(1){
 	    printf("1. Feed Lfish\n");
 	    printf("2. Feed Crab\n");
 	    scanf("%d", &pil);
-    if(pil==1){
-        pthread_create(&tid[3],NULL,&kenyang,NULL);
-    }
-    else if(pil==2){
-        pthread_create(&tid[4],NULL,&kenyang,NULL);
-    }
-	else{
-		/*sampai waktu dia kelaparan--*/
-	}
-	    
-	for(i=0;i<5;i++){
-	    pthread_join(tid[i],NULL);
+		if(pil==1){
+		    pthread_create(&tid[3],NULL,&kenyang,NULL);
+		}
+		else if(pil==2){
+		    pthread_create(&tid[4],NULL,&kenyang,NULL);
+		}
+		else{
+			/*sampai waktu dia kelaparan--*/
+		}
+			
+		for(int i=0;i<5;i++){
+			pthread_join(tid[i],NULL);
+		}
 	}
     return 0;
 }

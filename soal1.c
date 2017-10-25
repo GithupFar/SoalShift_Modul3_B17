@@ -67,7 +67,7 @@ int main ()
 							{
 								stock[i].qty=stock[i].qty+input.qty;
 								
-								printf("%s %d\n",stock[i].name,stock[i].qty);
+								printf("/n STOCK SENJATA %s BERJUMLAH %d\n",stock[i].name,stock[i].qty);
 								break;
 							}
 							else if (i==5 && search(&input,&stock[i])!=0)

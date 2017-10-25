@@ -31,22 +31,48 @@ int main ()
 	scanf ("%d",&a);
 	if (a==1)//  data admin
 	{
-
-	printf ("\n\n--Menu--\n");
-	printf ("1. tambah Stock\n");
-	printf ("2. lihat stock\n");
-	scanf ("%d",&b);
-		if (b==1)//input data
-		{
-		scanf("%[^\n] %d", input.name, input.qty);
-		printf("%s %d", input.name, input.qty);
-		}
+		
+		printf ("\n\n--Menu--\n");
+		printf ("1. tambah Stock\n");
+		printf ("2. lihat stock\n");
+		scanf ("%d",&b);
+			if (b==1)//input data
+			{
+				int i;
+				scanf("%s %d", input.name , &input.qty);
+				//printf("%s %d", input.name, input.qty);
+				for(i=0;i<=5;i++)
+				{
+					if (search(&input,&stock[i])==0)
+					{
+						stock[i].qty=stock[i].qty+input.qty;
+						
+						printf("%s %d/n",stock[i].name,stock[i].qty);
+						break;
+					}
+				}
+			}
+			if (b==2)//input data
+			{
+				int i;
+				scanf("%s", input.name);
+				//printf("%s %d", input.name, input.qty);
+				for(i=0;i<=5;i++)
+				{
+					if (search(&input,&stock[i])==0)
+					{
+						printf("%s %d/n",stock[i].name,stock[i].qty);
+						break;
+					}
+				}
+			}
 	}
 	else if (a==2)// data pelanggan
 	{
-	printf ("--Welcome--\n");
+		printf ("--Welcome--\n");
         printf ("1. Beli Senjata\n");
         printf ("2. lihat stock\n");
 	}
 };
-)
+}
+

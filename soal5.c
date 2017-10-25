@@ -43,8 +43,9 @@ int main()
 	while (scanf("%s",nama)!=EOF)
 	{
 		pthread_create(&tid[n],NULL,&carinama,nama);
+		pthread_join (tid [n],NULL); //menjalankan 1 thread sampai tuntas,baru menjalankan yang lainnya
         	n++;
 	}
-	for (int i=0;i<n;i++) pthread_join (tid [i],NULL);
+	//for (int i=0;i<n;i++) pthread_join (tid [i],NULL);
 	return 0;
 }

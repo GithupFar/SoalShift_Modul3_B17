@@ -1,23 +1,26 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 
-struct details
+typedef struct
 {
-const char* name[10];
+char *name;
 int qty;
-};
+}detail;
 
-struct details stock[10];
+int search(detail *no1,detail *no2)
+{
+	int valid;
+	valid = strcmp(no1->name, no2->name);
 
+	return valid;
+}
 
 int main ()
 {
-	*stock[1].name="MP4A1";
-        *stock[2].name="PM2-V1";
-        *stock[3].name="SPR-3";
-        *stock[4].name="MP4A1";
-        *stock[5].name="SS2-V5";
-        *stock[6].name="SPG1-V3";
-        *stock[7].name="MINE";
+	detail stock[] ={{"MP4A1",0},{"PM2-V1",0},{"SPR-3",0},{"SS2-V5",0},{"SPG1-V3",0},{"MINE",0}};
+	printf("---Welcome to Khawari Shop---\n");
 
 }
+
